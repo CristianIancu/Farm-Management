@@ -132,6 +132,7 @@ body::-webkit-scrollbar-thumb {
   height: 100vh;
 }
 .button-icon{
+	display:none;
   border: none;
   vertical-align:middle;
   color:var(--text-primary);

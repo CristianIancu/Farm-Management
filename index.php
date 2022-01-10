@@ -1,3 +1,12 @@
+<?php
+	session_start();
+	require_once("PHP/dbcontroller.php");
+	$db_handle = new DBController();
+	// We need to use sessions, so you should always start sessions using the below code.
+
+
+?>
+
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<script defer src="theme.js"></script>
@@ -9,7 +18,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 	<script src="http://leafletjs.com/reference-1.3.0.html#tooltip"></script>
-	<script src="variabile.js"></script>
+
 	<link href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" rel="stylesheet" />
 	<!-- Bootstrap CSS CDN -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -33,13 +42,46 @@
 	<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.2/dist/leaflet.draw.
 	css" />
 	<script src="https://unpkg.com/leaflet-draw@1.0.2/dist/leaflet.draw-src.js"></script>
-	
+		
 	
 </head>
 
+<?php
+	 if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['field']))
+{
+	$fieldName=$_POST['fieldN'];
+	$lat=$_POST['lat'];
+	$lng=$_POST['lng'];
+	
+	$link = mysqli_connect("localhost", "root", "", "farmmanagement");
+	if($link === false){
+          die("ERROR: Could not connect. " . mysqli_connect_error());
+    }
+	$area = 69;
+	
+	$sql = "INSERT INTO fields (area) VALUES ('$area')";
+	if(mysqli_query($link, $sql)){
+		//echo $sql;
+	} else{
+		echo "ERROR: Nu s-a putut introduce caminul $sql. " . mysqli_error($link);
+	}
+	
+	//if($query)
+	//{
+	//echo "<script>alert('Data inserted successfully');</script>";
+	//}
+	//else
+	//{
+	//	echo "<script>alert('Data not inserted');</script>";
+	//}
+}else{
+	echo "<script>alert('Data not inserted');</script>";
+}
+
+?>
 <body>
 <div class="screen">
-  <nav id="icons" class="icons-container" onmouseover="big();">
+  <nav id="icons" class="icons-container" onmouseover="">
     <ul class="icons-list">
       <li class="logo" onmouseover="changeMenu(0);">
         <a href="#" class="nav-link">
@@ -164,6 +206,27 @@
 			  <input type="text" placeholder="  Search..">
 			</div>
 			<hr>
+			
+			<!-- ADDING NEW ACTIVITY -->
+			<div id="new-activity" class="new-activity">
+				<form class="new-activity-form" action="/index.php" method="post">
+				  <p style="color:var(--text-primary); font-size: 25px;">Please select a job type:</p>
+				  <input type="radio" id="plowing" name="plowing" value="plowing">
+				  <label style="color:var(--text-primary);" for="plowing">PLOWING</label><br>
+				  <input type="radio" id="seeding" name="seeding" value="seeding">
+				  <label style="color:var(--text-primary);" for="seeding">SEEDING</label><br>
+				  <input type="radio" id="cultivating" name="cultivating" value="cultivating">
+				  <label style="color:var(--text-primary);" for="cultivating">CULTIVATING</label><br>
+				  <input type="radio" id="harvesting" name="harvesting" value="harvesting">
+				  <label style="color:var(--text-primary);" for="harvesting">HARVESTING</label><br>
+					
+				  <p style="color:var(--text-primary); font-size: 25px;">Please select fields:</p>
+				  <!-- for all fields show as radio -->
+				
+				  <input type="submit" value="Submit">
+				</form>
+			</div>
+
 		</div>
 		<!-- FIELDS -->
 		<div id="menu2">
@@ -172,7 +235,7 @@
 					<h1 class="top-menu-h1">Fields</h1>
 				</div>
 				<div class="top-menu-right">
-					<button id="add-activity" class="add-activity" onmousedown="">ADD NEW</button>
+					<button id="button" class="add-activity" onmousedown="addTerrain = true;">ADD NEW</button>
 				</div>
 			</div>
 			<hr>
@@ -180,9 +243,27 @@
 			  <input type="text" placeholder="  Search..">
 			</div>
 			<hr>
-			<ul class="container">
-				<button id="button" onmousedown="addTerrain = true;">Add terrain</button>
-			</ul>
+			<!-- ADD NEW FIELD -->
+			<div id="new-activity" class="new-activity">
+				
+				  <p style="color:var(--text-primary); font-size: 25px;">Please enter field name:</p>
+				  <input type="text" name="fieldName" id="fieldName" onfocusout="addFields();"><br>
+					
+				  <!---->
+				<form style="display:none;" id="fields" action="index.php" method="post">
+				  <input name="fieldN" id="fieldN" type="hidden" value="Default Field"><br>
+				  <input style="display:none;" name="lat" id="lat" type="text" value="14"><br>
+				  <input style="display:none;" name="lng" id="lng" type="text" value="14"><br>
+				  <input name="plm" id="plm" type="text" value="y"><br>
+				  <input type="submit" value="Add field" name="field" id="field">
+				</form>
+			</div>
+			<script src="JS/field.js"></script>
+			
+			
+			
+			
+			
 		</div>
 	</nav>
 	
@@ -215,7 +296,6 @@
 		else if(index == 1){
 			document.getElementById( 'menu2' ).style.display = "block";
 		}
-		
 	}
 </script>
 <script>
@@ -234,7 +314,7 @@
 	  },
 	  draw: false
 	}).addTo(map);
- 
+
 	// Add a new editable rectangle when clicking on the button.
 	button.addEventListener('click', function(event) {
 	  event.preventDefault();
@@ -255,11 +335,37 @@
 		else 
 			return false
 	}
-	let points = []
+	var points = []; 
+	var polygons=[];
 	addTerrain = false;
+	let fieldName;
+	function addFields(){
+		fieldName = document.getElementById('fieldName').value;
+		alert(fieldName);
+		addTerrain = true;
+		alert("please add points to map");
+	}
 	
+	function makeFormActive(){
+		document.getElementById( 'fields' ).style.display = "block";
+		var lat = [];
+		var lng = [];
+		var poly = polygons[0].getLatLngs();
+		for (let i = 0; i < poly[0].length; i++) {
+		  lat.push(poly[0][i].lat);
+		  lng.push(poly[0][i].lng);
+		}
+
+		document.getElementById('lat').value = lat;
+		document.getElementById('lng').value = lng;
+		
+		console.log(document.getElementById('lat').value);
+		console.log(document.getElementById('lng').value);
+	}
+
+	
+
 	map.on('click', function(e) {
-		alert(e.latlng);
 		if(addTerrain == true){
 		
 		points.push(e.latlng);
@@ -268,9 +374,10 @@
 				points[points.length-1] = points[0];
 				
 				var polygon = L.polygon(points).addTo(map);
+				polygons.push(polygon);
 				points = [];
-				polygon.bindPopup("<h1>Teren 1</h1>");
-				
+				polygon.bindPopup("<h1>"+fieldName+"</h1>");
+				makeFormActive();
 			}
 			else{
 				L.marker(e.latlng).addTo(map);
@@ -283,7 +390,7 @@
 	function onClick(){
 		var polygon = L.polygon(points).addTo(editableLayers);
 	}
-	
+
 	map.on('click', function(e) {
 		points.push(e.latlng)
 		L.marker(points[-1]).addTo(editableLayers).on('mouseover', onClick());
@@ -292,6 +399,8 @@
 		//alert(points)
 	});
 	*/
+		
+	
 </script>
 
 	

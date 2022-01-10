@@ -1,0 +1,66 @@
+
+
+let points = []; 
+function checkDistance(a,b,v){
+	var dst = Math.sqrt((b.lat - a.lat)*(b.lat - a.lat) + (b.lng - a.lng)*(b.lng - a.lng))
+	
+	if(dst < v)
+		return true
+	else 
+		return false
+}
+
+addTerrain = false;
+
+map.on('click', function(e) {
+	if(addTerrain == true){
+	
+	points.push(e.latlng);
+	
+		if(points.length > 1 && checkDistance(points[0],points[points.length-1],0.0001) == true){
+			points[points.length-1] = points[0];
+			
+			var polygon = L.polygon(points).addTo(map);
+			points = [];
+			polygon.bindPopup("<h1>Teren 1</h1>");
+			
+		}
+		else{
+			L.marker(e.latlng).addTo(map);
+		}
+		//alert(points)
+	}
+});
+/*
+	let points = []
+function onClick(){
+	var polygon = L.polygon(points).addTo(editableLayers);
+}
+
+map.on('click', function(e) {
+	points.push(e.latlng)
+	L.marker(points[-1]).addTo(editableLayers).on('mouseover', onClick());
+	var line = L.polyline(points).addTo(editableLayers);
+	
+	//alert(points)
+});
+*/
+	
+	
+	
+
+const form = document.querySelector("#fields");
+
+form.addEventListener("submit", function (event) {
+	// stop form submission
+	event.preventDefault();
+	
+	// validate the form
+	let lat = form.elements["lat"];
+	let lng = form.elements["lng"];
+	
+
+	
+	console.log(points);
+	
+});

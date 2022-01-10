@@ -35,7 +35,10 @@ body::-webkit-scrollbar-thumb {
       overflow:hidden;		
 	
 }
-
+.new-activity{
+	display:block;
+	padding:50px;
+}
 .map {
 	background:green;
 	width:95%;
