@@ -41,25 +41,25 @@
 <div class="screen">
   <nav id="icons" class="icons-container" onmouseover="big();">
     <ul class="icons-list">
-      <li class="logo">
+      <li class="logo" onmouseover="changeMenu(0);">
         <a href="#" class="nav-link">
           <img class="img-icon" src="assets/tasks.svg" alt="Tasks">
         </a>
       </li>
 
-      <li class="icon">
+      <li class="icon" onmouseover="changeMenu(1);">
         <a href="#" class="nav-link">
-          <img class="img-icon" src="assets/vehicles.svg" alt="Fields">
+          <img class="img-icon" src="assets/fields.svg" alt="Fields">
         </a>
       </li>
 
-      <li class="icon">
+      <li class="icon" onmouseover="changeMenu(2);">
         <a href="#" class="nav-link">
           <img class="img-icon" src="assets/vehicles.svg" alt="Vehicles">
         </a>
       </li>
 
-      <li class="icon">
+      <li class="icon" onmouseover="changeMenu(3);">
         <a href="#" class="nav-link">
           <img class="img-icon" src="assets/workers.svg" alt="Workers">
         </a>
@@ -147,13 +147,48 @@
       </li>
     </ul>
   </nav>
+  <nav class="vertical-line"></nav>
 	<nav id="menu" class="menu-container">
-		<ul class="container">
-			<button id="button">Add editable rectangle</button>
-		</ul>
+		<!-- ACTIVITY -->
+		<div id="menu1">
+			<div class="top-menu">
+				<div class="top-menu-left">
+					<h1 class="top-menu-h1">Activity</h1>
+				</div>
+				<div class="top-menu-right">
+					<button id="add-activity" class="add-activity" onmousedown="">ADD NEW</button>
+				</div>
+			</div>
+			<hr>
+			<div class="search">
+			  <input type="text" placeholder="  Search..">
+			</div>
+			<hr>
+		</div>
+		<!-- FIELDS -->
+		<div id="menu2">
+			<div class="top-menu">
+				<div class="top-menu-left">
+					<h1 class="top-menu-h1">Fields</h1>
+				</div>
+				<div class="top-menu-right">
+					<button id="add-activity" class="add-activity" onmousedown="">ADD NEW</button>
+				</div>
+			</div>
+			<hr>
+			<div class="search">
+			  <input type="text" placeholder="  Search..">
+			</div>
+			<hr>
+			<ul class="container">
+				<button id="button" onmousedown="addTerrain = true;">Add terrain</button>
+			</ul>
+		</div>
 	</nav>
-
-  <div id="mapContainer" class="map"  onmouseover="small();">
+	
+	<button id="button-icon" class="button-icon" onmousedown="small();"><</button>
+	
+  <div id="mapContainer" class="map">
     <div id="map1"></div>
   </div>
 </div>
@@ -161,14 +196,27 @@
 
 <script>
 	function small(){
-		//document.getElementById( 'icons' ).style.width = "10%";
-        document.getElementById( 'menu' ).style.display = "none";
-        document.getElementById( 'mapContainer' ).style.width = "95%";
-    }
-    function big(){
+		document.getElementById( 'menu' ).style.display = "none";
+		document.getElementById( 'mapContainer' ).style.width = "95%";
+		document.getElementById( 'button-icon' ).style.display = "none";
+		menu = false;
+	}
+	function changeMenu(index){
 		document.getElementById( 'menu' ).style.display = "block";
-        document.getElementById( 'mapContainer' ).style.width = "50%";
-    }
+		document.getElementById( 'button-icon' ).style.display = "block";
+		document.getElementById( 'mapContainer' ).style.width = "50%";
+		
+		document.getElementById( 'menu1' ).style.display = "none";
+		document.getElementById( 'menu2' ).style.display = "none";
+		
+		if(index == 0){
+			document.getElementById( 'menu1' ).style.display = "block";
+		}
+		else if(index == 1){
+			document.getElementById( 'menu2' ).style.display = "block";
+		}
+		
+	}
 </script>
 <script>
 	var osmUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -178,7 +226,7 @@
 		attributionControl: false
 	  });
 	var map = L.map('map1').setView([45.699024, 21.072861], 17).addLayer(osm);
-	
+	/*
 	var editableLayers = L.featureGroup().addTo(map);
 	var drawControl = new L.Control.Draw({
 	  edit: {
@@ -198,7 +246,7 @@
 		getRandomLatLng()
 	  ]).addTo(editableLayers); // Add to editableLayers instead of directly to map.
 	});
-
+	*/
 	function checkDistance(a,b,v){
 		var dst = Math.sqrt((b.lat - a.lat)*(b.lat - a.lat) + (b.lng - a.lng)*(b.lng - a.lng))
 		
@@ -208,18 +256,41 @@
 			return false
 	}
 	let points = []
+	addTerrain = false;
+	
 	map.on('click', function(e) {
-		points.push(e.latlng)
-		for (let i = 0; i < points.length-1; i++) {
-			if(checkDistance(points[i],points[points.length-1],0.0001) == true){
-				var polygon = L.polygon(points).addTo(editableLayers);
+		if(addTerrain == true){
+		
+		points.push(e.latlng);
+		
+			if(points.length > 1 && checkDistance(points[0],points[points.length-1],0.0001) == true){
+				points[points.length-1] = points[0];
+				
+				var polygon = L.polygon(points).addTo(map);
+				points = [];
+				polygon.bindPopup("<h1>Teren 1</h1>");
+				
 			}
 			else{
-				var line = L.polyline(points).addTo(editableLayers);
+				L.marker(e.latlng).addTo(map);
 			}
+			//alert(points)
 		}
+	});
+	/*
+		let points = []
+	function onClick(){
+		var polygon = L.polygon(points).addTo(editableLayers);
+	}
+	
+	map.on('click', function(e) {
+		points.push(e.latlng)
+		L.marker(points[-1]).addTo(editableLayers).on('mouseover', onClick());
+		var line = L.polyline(points).addTo(editableLayers);
+		
 		//alert(points)
 	});
+	*/
 </script>
 
 	

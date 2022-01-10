@@ -29,10 +29,17 @@ body::-webkit-scrollbar-thumb {
 .screen {
 	display:flex;
 }
+#map1 {
+     height: 180px;
+		width: 100%; height: 100%; 
+      overflow:hidden;		
+	
+}
 
 .map {
 	background:green;
 	width:95%;
+	
   /*margin-left: 5rem;
   padding: 1rem;*/
 }
@@ -41,7 +48,56 @@ body::-webkit-scrollbar-thumb {
 	width:90%;
 	height:90%;
 }
+.menu-container{
+	background-color: var(--bg-primary);
+	height:30%;
+}
 
+.vertical-line{
+	background-color: var(--bg-secondary);
+	width:5px;
+}
+.menu-container hr {
+    visibility: visible;
+    margin: 0 auto;
+    width: 100%;
+    border: 0;
+    height: 3px;
+	background-color:var(--bg-secondary);
+    /*background-image: linear-gradient(to right, var(--bg-primary), var(--bg-secondary), var(--bg-primary));*/
+}
+.top-menu {
+	display: flex;
+	justify-content: space-between;
+}
+.top-menu-left{
+	display: flex;
+	justify-content: flex-start;
+}
+.top-menu-right{
+	display: flex;
+	justify-content: flex-end;
+}
+.add-activity
+{
+	margin-top:auto;
+	border:none;
+	background:var(--bg-secondary);
+	color:var(--text-secondary);
+	font-weight: bolder;
+	border-radius: 20px;
+	padding-left:20px;
+	padding-right:20px;
+	margin-bottom:auto;
+	margin-right:50px;
+	height:50%;
+}
+.top-menu-h1{
+	color:var(--text-secondary);
+	padding:30px;
+	justify-content: flex-start;
+	vertical-align:middle;
+}
 .icons-container {
   /*position: fixed;*/
   background-color: var(--bg-primary);
@@ -58,7 +114,9 @@ body::-webkit-scrollbar-thumb {
   align-items: center;
   height: 100%;
 }
-
+#menu1, #menu2{
+	display:none;
+}
 .icon {
   width: 100%;
 }
@@ -66,7 +124,27 @@ body::-webkit-scrollbar-thumb {
 .icon:last-child {
   margin-top: auto;
 }
+.menu-button {
+  /*border-radius: 0px 50px 50px 0px;*/
+  width:50px;
+  background-color: var(--bg-secondary);
+  display:flex;
+  height: 100vh;
+}
+.button-icon{
+  border: none;
+  vertical-align:middle;
+  color:var(--text-primary);
+  background-color: var(--bg-secondary);
 
+}
+.search{
+	padding:40px;
+}	
+.search input{
+	font-size: 25px;
+	border-radius:20px;
+}
 .nav-link {
   display: flex;
   align-items: center;
