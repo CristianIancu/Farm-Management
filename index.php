@@ -259,12 +259,46 @@
 				</form>
 			</div>
 			<script src="JS/field.js"></script>
-			
-			
-			
-			
-			
 		</div>
+		<!-- WORKERS -->
+		<div id="menu4">
+			<div class="top-menu">
+				<div class="top-menu-left">
+					<h1 class="top-menu-h1">Activity</h1>
+				</div>
+				<div class="top-menu-right">
+					<button id="add-activity" class="add-activity" onmousedown="">ADD NEW</button>
+				</div>
+			</div>
+			<hr>
+			<div class="search">
+			  <input type="text" placeholder="  Search..">
+			</div>
+			<hr>
+			
+			<!-- ADDING NEW ACTIVITY -->
+			<div id="new-activity" class="new-activity">
+				<form class="new-activity-form" action="/index.php" method="post">
+				  <p style="color:var(--text-primary); font-size: 25px;">Please select a job type:</p>
+				  <input type="radio" id="plowing" name="plowing" value="plowing">
+				  <label style="color:var(--text-primary);" for="plowing">PLOWING</label><br>
+				  <input type="radio" id="seeding" name="seeding" value="seeding">
+				  <label style="color:var(--text-primary);" for="seeding">SEEDING</label><br>
+				  <input type="radio" id="cultivating" name="cultivating" value="cultivating">
+				  <label style="color:var(--text-primary);" for="cultivating">CULTIVATING</label><br>
+				  <input type="radio" id="harvesting" name="harvesting" value="harvesting">
+				  <label style="color:var(--text-primary);" for="harvesting">HARVESTING</label><br>
+					
+				  <p style="color:var(--text-primary); font-size: 25px;">Please select fields:</p>
+				  <!-- for all fields show as radio -->
+				
+				  <input type="submit" value="Submit">
+				</form>
+			</div>
+
+		</div>
+		
+		
 	</nav>
 	
 	<button id="button-icon" class="button-icon" onmousedown="small();"><</button>

@@ -57,7 +57,14 @@
 	if($link === false){
           die("ERROR: Could not connect. " . mysqli_connect_error());
     }
+	$area = 69;
 	
+	$sql = "INSERT INTO fields (area) VALUES ('$area')";
+	if(mysqli_query($link, $sql)){
+		//echo $sql;
+	} else{
+		echo "ERROR: Nu s-a putut introduce caminul $sql. " . mysqli_error($link);
+	}
 	
 	//if($query)
 	//{
