@@ -260,6 +260,9 @@
 			</div>
 			<script src="JS/field.js"></script>
 		</div>
+		<!-- NUSH -->
+		<div id="menu3">
+		</div>
 		<!-- WORKERS -->
 		<div id="menu4">
 			<div class="top-menu">
@@ -323,12 +326,20 @@
 		
 		document.getElementById( 'menu1' ).style.display = "none";
 		document.getElementById( 'menu2' ).style.display = "none";
+		document.getElementById( 'menu3' ).style.display = "none";
+		document.getElementById( 'menu4' ).style.display = "none";
 		
 		if(index == 0){
 			document.getElementById( 'menu1' ).style.display = "block";
 		}
 		else if(index == 1){
 			document.getElementById( 'menu2' ).style.display = "block";
+		}
+		else if(index == 2){
+			document.getElementById( 'menu3' ).style.display = "block";
+		}
+		else if(index == 3){
+			document.getElementById( 'menu4' ).style.display = "block";
 		}
 	}
 </script>
