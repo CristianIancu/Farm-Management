@@ -160,24 +160,25 @@ if(isset($_POST['submit']))
 	}
 	
 	.flex-container {
-	  display: flex;
-	  height:500px;
-	  color:white;
-	  flex-direction: column;
-	  background-color:#23232e;
-	  overflow-x: hidden;
-	  overflow-y: auto;
-	}
-
-	.flex-container > div {
-	  background-color: #f1f1f1;
-	  width: 100%;
-	  margin: 10px;
-	  
-	  line-height: 75px;
-	  font-size: 30px;
-	}
-	.div.scroll {
+  display: flex;
+  height: 500px;
+  color:white;
+  flex-direction: column;
+  background-color:#23232e;
+  overflow-x: hidden;
+        overflow-y: auto;
+	
+  
+}
+.flex-container > div {
+  background-color: #f1f1f1;
+  width: 100%;
+  margin: 10px;
+  
+  line-height: 75px;
+  font-size: 30px;
+}
+.div.scroll {
         background-color: #fed9ff;
         width: 600px;
         height: 150px;
@@ -185,6 +186,7 @@ if(isset($_POST['submit']))
         overflow-y: auto;
         text-align: center;
         padding: 20px;
+      }
       }
 </style>
 <body style="overflow: hidden;">
@@ -203,11 +205,6 @@ if(isset($_POST['submit']))
         </a>
       </li>
 
-      <li class="icon" onmouseover="changeMenu(2);">
-        <a href="#" class="nav-link">
-          <img class="img-icon" src="assets/vehicles.svg" alt="Vehicles">
-        </a>
-      </li>
 
       <li class="icon" onmouseover="changeMenu(3);">
         <a href="#" class="nav-link">
@@ -316,7 +313,9 @@ if(isset($_POST['submit']))
 			<hr>
 			
 			<!-- ADDING NEW ACTIVITY -->
-			<div style="display:none;" id="new-activity" class="new-activity">
+			<div style="display:none;" id="new-activity" class="new-activity" >
+			
+			 <div  class="flex-container"style="height:410px;">
 				<form class="new-activity-form" action="activit.php" method="POST">
 				  <p style="color:var(--text-primary); font-size: 25px;">Please select a job type:</p>
 				  <input type="radio" name="type" value="plowing">
@@ -327,23 +326,64 @@ if(isset($_POST['submit']))
 				  <label style="color:var(--text-primary);"for="">CULTIVATING</label><br>
 				  <input type="radio" name="type" value="harvesting">
 				  <label style="color:var(--text-primary);"for="">HARVESTING</label><br>
-					
+				
 				  <p style="color:var(--text-primary); font-size: 25px;">Please select fields:</p>
+					
 					<?php
 					for ($i = 0 ; $i < count($teren) ; $i++)
 					{
 					?>
-					<input type="radio"  name="fiel" value="<?php  echo $teren[$i][0];?>">
-					<label style="color:var(--text-primary);" for="teren"><?php  echo $teren[$i][1];?></p></label>
+					<input type="radio"  name="fiel" value="<?php  echo $teren[$i][1];?>">
+					<label style="color:var(--text-primary);" for="teren"><?php  echo $teren[$i][1];?></p></label><br>
 					<?php
 					
 					}
 					?>
-					
+					</div>
 				  <!-- for all fields show as radio -->
 				  <button type="submit" name="save_radio" >Submit</button>
-				</form>
+				
+			</form>
+			
+			
 			</div>
+			<hr>
+			<?php
+					$lin = mysqli_connect("localhost", "root", "", "farmmanagement");
+				   if($lin === false){
+					  die("ERROR: Could not connect. " . mysqli_connect_error());
+				   }
+				   
+				   $quer = "SELECT type, field FROM activity ";
+				   $q = "SELECT * FROM fields where id=";
+				   $r = mysqli_query($lin,$q);
+				   $a = array();
+				   
+				   $resul = mysqli_query($lin,$quer);
+				   $actv=array();
+				   
+				   while($re=mysqli_fetch_array($resul))
+				   {
+					   
+					   array_push($actv,$re);
+		
+					}
+				 
+				  			  
+				
+				 ?>
+				 <div id="new-activity-scroll"  class="flex-container" style="height:700px;">
+				<?php
+				for ($i = 0 ; $i < count($actv) ; $i++)
+				{
+					?><div class="top-menu" style=" background-color:#23232e;">
+					<div class="top-menu-left"><p><?php  echo $actv[$i][1];?></p></div>
+					<div class="top-menu-right"><p style="margin-right:50px;" ><?php  echo $actv[$i][1];?></p></div></div>
+					<?php
+					
+				}
+				?>
+				</div>
 
 		</div>
 		<!-- FIELDS -->
@@ -424,8 +464,6 @@ if(isset($_POST['submit']))
 				<div class="wrap">
         <input class="iasmi" class='button' type="submit" align="center" name="submit" value ="Add" />
       </div>  
-				
-			
 				</form>
 				</div>
 				<hr>
@@ -441,13 +479,9 @@ if(isset($_POST['submit']))
 				   
 				   while($rez=mysqli_fetch_array($result))
 				   {
-					   
 					   array_push($username,$rez);
 		
 					}
-				 
-				  			  
-				
 				 ?>
 				 <div id="new-activity"  class="flex-container">
 				<?php
@@ -461,12 +495,6 @@ if(isset($_POST['submit']))
 				}
 				?>
 				</div>
-				
-			
-			
-			
-		
-
 		</div>
 		
 		
@@ -483,6 +511,9 @@ if(isset($_POST['submit']))
 <script>
 	function addNewActivity(){
 		document.getElementById( 'new-activity' ).style.display = "block";
+		document.getElementById( 'new-activity-scroll' ).style.height = "200px";
+		
+		
 	}
 	function addFieldForm(){
 		document.getElementById( 'new-field' ).style.display = "block";
@@ -506,7 +537,10 @@ if(isset($_POST['submit']))
 		document.getElementById( 'menu2' ).style.display = "none";
 		document.getElementById( 'menu3' ).style.display = "none";
 		document.getElementById( 'menu4' ).style.display = "none";
-		
+		document.getElementById( 'new-activity' ).style.display = "none";
+		document.getElementById( 'new-field' ).style.display = "none";
+		document.getElementById( 'new-worker' ).style.display = "none";
+		document.getElementById( 'new-activity-scroll' ).style.height = "700px";
 		if(index == 0){
 			document.getElementById( 'menu1' ).style.display = "block";
 		}
