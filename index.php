@@ -6,24 +6,7 @@
 
 
 ?>
-<?php
-include_once("PHP/config.php");
-if(isset($_POST['submit']))
-{
-	$username=$_POST['username'];
-	$email=$_POST['email'];
-	$password=$_POST['password'];
-	$query=mysqli_query($con,"insert into users (username,email,password) values('$username','$email','$password')");
-	if($query)
-	{
-	echo "<script>alert('Data inserted successfully');</script>";
-	}
-	else
-	{
-		echo "<script>alert('Data not inserted');</script>";
-	}
-}
- ?>
+
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<script defer src="theme.js"></script>
@@ -59,7 +42,39 @@ if(isset($_POST['submit']))
 	<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.2/dist/leaflet.draw.
 	css" />
 	<script src="https://unpkg.com/leaflet-draw@1.0.2/dist/leaflet.draw-src.js"></script>
-		
+	<style>
+.flex-container {
+  display: flex;
+  height: 500px;
+  color:white;
+  flex-direction: column;
+  background-color:#23232e;
+  overflow-x: hidden;
+        overflow-y: auto;
+	
+  
+}
+
+  
+
+.flex-container > div {
+  background-color: #f1f1f1;
+  width: 100%;
+  margin: 10px;
+  
+  line-height: 75px;
+  font-size: 30px;
+}
+.div.scroll {
+        background-color: #fed9ff;
+        width: 600px;
+        height: 150px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        text-align: center;
+        padding: 20px;
+      }
+</style>
 	
 </head>
 
@@ -67,47 +82,36 @@ if(isset($_POST['submit']))
 	 if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['field']))
 {
 	$fieldName=$_POST['fieldN'];
-	$lat=explode(',',$_POST['lat']);
-	$lng=explode(',',$_POST['lng']);
-	$area = $_POST['area'];
-
+	$lat=$_POST['lat'];
+	$lng=$_POST['lng'];
+	
 	$link = mysqli_connect("localhost", "root", "", "farmmanagement");
 	if($link === false){
           die("ERROR: Could not connect. " . mysqli_connect_error());
     }
+	$area = 69;
 	
-	
-	$sql = "INSERT INTO fields (name,area) VALUES ('$fieldName','$area')";
+	$sql = "INSERT INTO fields (area) VALUES ('$area')";
 	if(mysqli_query($link, $sql)){
 		//echo $sql;
 	} else{
-		echo "ERROR: Nu s-a putut introduce field $sql. " . mysqli_error($link);
-	}
-	//let's get field id to add points to that field
-	
-    $query = "SELECT * FROM fields where name='$fieldName'";
-    $result = mysqli_query($link,$query);
-	
-    if($result)
-	   $rez=mysqli_fetch_array($result);
-	$id_field=$rez['id'];
-	
-	
-	
-	//adding the points to field
-	
-	for ($i = 0; $i < count($lat); $i++) {
-		$sql = "INSERT INTO points (id_field,lat,lng,i) VALUES ('$id_field','$lat[$i]','$lng[$i]','$i')";
-		if(mysqli_query($link, $sql)){
-			//echo $sql;
-		} else{
-			echo "ERROR: Nu s-a putut introduce punctele in field $sql. " . mysqli_error($link);
-		}
+		echo "ERROR: Nu s-a putut introduce caminul $sql. " . mysqli_error($link);
 	}
 	
+	//if($query)
+	//{
+	//echo "<script>alert('Data inserted successfully');</script>";
+	//}
+	//else
+	//{
+	//	echo "<script>alert('Data not inserted');</script>";
+	//}
+}else{
+	echo "<script>alert('Data not inserted');</script>";
 }
 
 ?>
+<body>
 <?php
 					$link = mysqli_connect("localhost", "root", "", "farmmanagement");
 				   if($link === false){
@@ -122,72 +126,12 @@ if(isset($_POST['submit']))
 				   {
 					   
 					   array_push($teren,$rez);
-					   
-					   
-					   
-					   
-					   
+		
 					}
 				 
 				  			  
 				
-			 ?>
-	<style>
-	
-	.iasmi, select {
-	  width: 100%;
-	  padding: 12px 20px;
-	  margin: 8px 0;
-	  display: inline-block;
-	  border: 1px solid #ccc;
-	  border-radius: 4px;
-	  box-sizing: border-box;
-	}
-
-	.iasmi[type=submit] {
-	  width: 100%;
-	  background-color: #4CAF50;
-	  color: white;
-	  padding: 14px 20px;
-	  margin: 8px 0;
-	  border: none;
-	  border-radius: 4px;
-	  cursor: pointer;
-	}
-
-	.iasmi[type=submit]:hover {
-	  background-color
-	}
-	
-	.flex-container {
-	  display: flex;
-	  height:500px;
-	  color:white;
-	  flex-direction: column;
-	  background-color:#23232e;
-	  overflow-x: hidden;
-	  overflow-y: auto;
-	}
-
-	.flex-container > div {
-	  background-color: #f1f1f1;
-	  width: 100%;
-	  margin: 10px;
-	  
-	  line-height: 75px;
-	  font-size: 30px;
-	}
-	.div.scroll {
-        background-color: #fed9ff;
-        width: 600px;
-        height: 150px;
-        overflow-x: hidden;
-        overflow-y: auto;
-        text-align: center;
-        padding: 20px;
-      }
-</style>
-<body style="overflow: hidden;">
+				 ?>
 <div class="screen">
   <nav id="icons" class="icons-container" onmouseover="">
     <ul class="icons-list">
@@ -306,7 +250,7 @@ if(isset($_POST['submit']))
 					<h1 class="top-menu-h1">Activity</h1>
 				</div>
 				<div class="top-menu-right">
-					<button id="add-activity" class="add-activity" onmousedown="addNewActivity();">ADD NEW</button>
+					<button id="add-activity" class="add-activity" onmousedown="">ADD NEW</button>
 				</div>
 			</div>
 			<hr>
@@ -316,7 +260,9 @@ if(isset($_POST['submit']))
 			<hr>
 			
 			<!-- ADDING NEW ACTIVITY -->
-			<div style="display:none;" id="new-activity" class="new-activity">
+			<div id="new-activity" class="new-activity" >
+			
+			 <div id="new-activity"  class="flex-container"style="height:500px;">
 				<form class="new-activity-form" action="activit.php" method="POST">
 				  <p style="color:var(--text-primary); font-size: 25px;">Please select a job type:</p>
 				  <input type="radio" name="type" value="plowing">
@@ -327,8 +273,9 @@ if(isset($_POST['submit']))
 				  <label style="color:var(--text-primary);"for="">CULTIVATING</label><br>
 				  <input type="radio" name="type" value="harvesting">
 				  <label style="color:var(--text-primary);"for="">HARVESTING</label><br>
-					
+				
 				  <p style="color:var(--text-primary); font-size: 25px;">Please select fields:</p>
+					
 					<?php
 					for ($i = 0 ; $i < count($teren) ; $i++)
 					{
@@ -339,11 +286,15 @@ if(isset($_POST['submit']))
 					
 					}
 					?>
-					
+					</div>
 				  <!-- for all fields show as radio -->
 				  <button type="submit" name="save_radio" >Submit</button>
-				</form>
+				
+			</form>
+			
+			
 			</div>
+			
 
 		</div>
 		<!-- FIELDS -->
@@ -353,7 +304,7 @@ if(isset($_POST['submit']))
 					<h1 class="top-menu-h1">Fields</h1>
 				</div>
 				<div class="top-menu-right">
-					<button id="button" class="add-activity" onmousedown="addFieldForm();">ADD NEW</button>
+					<button id="button" class="add-activity" onmousedown="addTerrain = true;">ADD NEW</button>
 				</div>
 			</div>
 			<hr>
@@ -362,25 +313,94 @@ if(isset($_POST['submit']))
 			</div>
 			<hr>
 			<!-- ADD NEW FIELD -->
-			<div style="display:none;" id="new-field" class="new-activity">
+			<div id="new-activity" class="new-activity">
 				
 				  <p style="color:var(--text-primary); font-size: 25px;">Please enter field name:</p>
 				  <input type="text" name="fieldName" id="fieldName" onfocusout="addFields();"><br>
 					
 				  <!---->
 				<form style="display:none;" id="fields" action="index.php" method="post">
-				  <input style="display:none;" name="fieldN" id="fieldN" type="text" value="Default Field"><br>
+				  <input name="fieldN" id="fieldN" type="hidden" value="Default Field"><br>
 				  <input style="display:none;" name="lat" id="lat" type="text" value="14"><br>
 				  <input style="display:none;" name="lng" id="lng" type="text" value="14"><br>
-				  <input style="display:none;" name="area" id="area" type="text" value="14"><br>
-				  
+				  <input name="plm" id="plm" type="text" value="y"><br>
 				  <input type="submit" value="Add field" name="field" id="field">
 				</form>
+				
 			</div>
+			<hr>
+
+				 <div id="new-activity"  class="flex-container" >
+				<?php
+				for ($i = 0 ; $i < count($teren) ; $i++)
+				{ 
+					?><div class="top-menu" style=" background-color:#23232e;">
+					<div class="top-menu-left"><p><?php  echo $teren[$i][1];?></p></div>
+					<div class="top-menu-right"><p style="margin-right:50px;" ><?php  echo $teren[$i][2];?></p></div></div>
+					<?php
+					
+				}
+				?>
+				</div>
+				
 			
 			<script src="JS/field.js"></script>
-			<hr>
+		</div>
+		<!-- NUSH -->
+		<div id="menu3">
+			<div class="top-menu">
+				<div class="top-menu-left">
+					<h1 class="top-menu-h1">Activity workers</h1>
+				</div>
+				
+			</div>
 			
+			
+			<hr>
+
+				<?php
+					$lin = mysqli_connect("localhost", "root", "", "farmmanagement");
+				   if($lin === false){
+					  die("ERROR: Could not connect. " . mysqli_connect_error());
+				   }
+				   
+				   $quer = "SELECT * FROM activity";
+				   $resul = mysqli_query($lin,$quer);
+				   $actv=array();
+				   
+				   while($re=mysqli_fetch_array($resul))
+				   {
+					   
+					   array_push($actv,$re);
+		
+					}
+				 
+				  			  
+				
+				 ?>
+				 <div id="new-activity"  class="flex-container" style="height:700px;">
+				<?php
+				for ($i = 0 ; $i < count($actv) ; $i++)
+				{
+					?><div class="top-menu" style=" background-color:#23232e;">
+					<div class="top-menu-left"><p><?php  echo $actv[$i][1];?></p></div>
+					<div class="top-menu-right"><p style="margin-right:50px;" ><?php  echo $actv[$i][2];?></p></div></div>
+					<?php
+					
+				}
+				?>
+				</div>
+				
+			</div>
+			<script src="JS/field.js"></script>
+		
+	
+		<!-- WORKERS -->
+		<div id="menu4">
+			<div class="top-menu">
+				<div class="top-menu-left">
+					<h1 class="top-menu-h1">Activity workers</h1>
+				</div>
 				 <div id="new-activity"  class="flex-container">
 				<?php
 				for ($i = 0 ; $i < count($teren) ; $i++)
@@ -393,79 +413,9 @@ if(isset($_POST['submit']))
 				}
 				?>
 				</div>
-				
-		</div>
-		<!-- NUSH -->
-		<div id="menu3">
-		
-		</div>
-		<!-- WORKERS -->
-		<div id="menu4">
-			<div class="top-menu">
-				<div class="top-menu-left">
-					<h1 class="top-menu-h1">WORKERS</h1>
-				</div>
-				<div class="top-menu-right">
-					<button id="button" class="add-activity" onmousedown="addWorkerForm();">ADD NEW</button>
-				</div>
 			</div>
 			<hr>
-			<div style="display:none;" id="new-worker" class="new-activity">
-				<form action="" method="post"  >
-				  <p style="color:var(--text-primary); font-size: 25px;">Creare cont angajati</p>
-        <input class="iasmi" name="username" type="text"  name="username" autocomplete="false" placeholder="Name">
-      	  <p class='field'>
-        <input class="iasmi" name="email" type="text"  name="email" autocomplete="false" placeholder="E-mail">
-      </p>
-      <p class='field'>
-        <input class="iasmi" name="password" type="password" name="password" autocomplete="false" placeholder="Password">
-      </p>
-					
-				<div class="wrap">
-        <input class="iasmi" class='button' type="submit" align="center" name="submit" value ="Add" />
-      </div>  
-				
 			
-				</form>
-				</div>
-				<hr>
-				<?php
-					$link = mysqli_connect("localhost", "root", "", "farmmanagement");
-				   if($link === false){
-					  die("ERROR: Could not connect. " . mysqli_connect_error());
-				   }
-				   
-				   $query = "SELECT * FROM users";
-				   $result = mysqli_query($link,$query);
-				   $username=array();
-				   
-				   while($rez=mysqli_fetch_array($result))
-				   {
-					   
-					   array_push($username,$rez);
-		
-					}
-				 
-				  			  
-				
-				 ?>
-				 <div id="new-activity"  class="flex-container">
-				<?php
-				for ($i = 0 ; $i < count($username) ; $i++)
-				{
-					?><div class="top-menu" style=" background-color:#23232e; color: white">
-					<div class="top-menu-left"><p><?php  echo $username[$i][1];?></p></div>
-					<div class="top-menu-right"><p style="margin-right:50px;" ></p></div></div>
-					<?php
-					
-				}
-				?>
-				</div>
-				
-			
-			
-			
-		
 
 		</div>
 		
@@ -481,16 +431,6 @@ if(isset($_POST['submit']))
 
 
 <script>
-	function addNewActivity(){
-		document.getElementById( 'new-activity' ).style.display = "block";
-	}
-	function addFieldForm(){
-		document.getElementById( 'new-field' ).style.display = "block";
-	}
-	function addWorkerForm(){
-		document.getElementById( 'new-worker' ).style.display = "block";
-	}
-	
 	function small(){
 		document.getElementById( 'menu' ).style.display = "none";
 		document.getElementById( 'mapContainer' ).style.width = "95%";
@@ -529,9 +469,27 @@ if(isset($_POST['submit']))
 		attributionControl: false
 	  });
 	var map = L.map('map1').setView([45.699024, 21.072861], 17).addLayer(osm);
-	
-	
-	
+	/*
+	var editableLayers = L.featureGroup().addTo(map);
+	var drawControl = new L.Control.Draw({
+	  edit: {
+		featureGroup: editableLayers
+	  },
+	  draw: false
+	}).addTo(map);
+
+	// Add a new editable rectangle when clicking on the button.
+	button.addEventListener('click', function(event) {
+	  event.preventDefault();
+		var latlngs = [[getRandomLatLng()],[getRandomLatLng()],[getRandomLatLng()],[getRandomLatLng()]];
+		var polygon = L.polygon(latlngs).addTo(editableLayers);
+
+	  L.rectangle([
+		getRandomLatLng(),
+		getRandomLatLng()
+	  ]).addTo(editableLayers); // Add to editableLayers instead of directly to map.
+	});
+	*/
 	function checkDistance(a,b,v){
 		var dst = Math.sqrt((b.lat - a.lat)*(b.lat - a.lat) + (b.lng - a.lng)*(b.lng - a.lng))
 		
@@ -555,22 +513,17 @@ if(isset($_POST['submit']))
 		document.getElementById( 'fields' ).style.display = "block";
 		var lat = [];
 		var lng = [];
-		var area;
 		var poly = polygons[0].getLatLngs();
 		for (let i = 0; i < poly[0].length; i++) {
 		  lat.push(poly[0][i].lat);
 		  lng.push(poly[0][i].lng);
 		}
-			
-	    area = L.GeometryUtil.geodesicArea(polygons[0].getLatLngs()[0]);
-		
-		document.getElementById('fieldN').value = fieldName;
+
 		document.getElementById('lat').value = lat;
 		document.getElementById('lng').value = lng;
-		document.getElementById('area').value = area;
 		
-		//console.log(document.getElementById('lat').value);
-		//console.log(document.getElementById('lng').value);
+		console.log(document.getElementById('lat').value);
+		console.log(document.getElementById('lng').value);
 	}
 
 	
@@ -595,66 +548,25 @@ if(isset($_POST['submit']))
 			//alert(points)
 		}
 	});
+	/*
+		let points = []
+	function onClick(){
+		var polygon = L.polygon(points).addTo(editableLayers);
+	}
+
+	map.on('click', function(e) {
+		points.push(e.latlng)
+		L.marker(points[-1]).addTo(editableLayers).on('mouseover', onClick());
+		var line = L.polyline(points).addTo(editableLayers);
+		
+		//alert(points)
+	});
+	*/
+		
 	
 </script>
 
-		<?php
-			$query = "SELECT * FROM fields";
-		    $result = mysqli_query($link,$query);
-		    $teren=array();
-		    
-		    while($rez=mysqli_fetch_array($result))
-		    {
-			    array_push($teren,$rez);
-			}
-			//$teren[0]['name'];
-			//$teren[0]['id'];
-			//$teren[0]['area'];
-			$points_arr = array();
-			for($i=0;$i<count($teren);$i++)
-			{
-				$id = $teren[$i]['id'];
-
-				$query = "SELECT * FROM points where id_field = '$id' ORDER BY i ASC";
-				$result = mysqli_query($link,$query);
-			 
-				$points=array();
-				
-				while($rez=mysqli_fetch_array($result))
-				{
-					array_push($points,$rez);
-				}
-				array_push($points_arr,$points);
-			}
-			for($i=0;$i<count($points_arr);$i++)
-			{
-				$points = $points_arr[$i];
-?>
-<script>
-				var LatLng = [];
-</script>
-<?php
-				//echo $teren[$i]['name'] . '<br>';
-				for($j=0;$j<count($points);$j++)
-				{
-					//echo $points[$j]['lat'] . '<br>';
-?>
-					<script>
-					var latlng = L.latLng(<?php echo $points[$j]['lat']; ?>, <?php echo $points[$j]['lng']; ?>);
-					LatLng.push(latlng);
-					</script>
-<?php
-				}
-?>
-<script>
-				console.log(LatLng);
-				var polygon = L.polygon(LatLng).addTo(map);
-				polygon.bindPopup("<?php echo '<h1>'.$teren[$i]['name'].'</h1>'; ?>");
-	</script>
-			
-			<?php
-			}
-			?>
+	
 	
 <!-- jQuery -->
     <script src="js/jquery-2.1.0.min.js"></script>
