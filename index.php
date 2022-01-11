@@ -42,7 +42,37 @@
 	<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.2/dist/leaflet.draw.
 	css" />
 	<script src="https://unpkg.com/leaflet-draw@1.0.2/dist/leaflet.draw-src.js"></script>
-		
+	<style>
+.flex-container {
+  display: flex;
+  height:500px;
+  color:white;
+  flex-direction: column;
+  background-color:#23232e;
+  overflow-x: hidden;
+        overflow-y: auto;
+	
+  
+}
+
+.flex-container > div {
+  background-color: #f1f1f1;
+  width: 100%;
+  margin: 10px;
+  
+  line-height: 75px;
+  font-size: 30px;
+}
+.div.scroll {
+        background-color: #fed9ff;
+        width: 600px;
+        height: 150px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        text-align: center;
+        padding: 20px;
+      }
+</style>
 	
 </head>
 
@@ -80,6 +110,26 @@
 
 ?>
 <body>
+<?php
+					$link = mysqli_connect("localhost", "root", "", "farmmanagement");
+				   if($link === false){
+					  die("ERROR: Could not connect. " . mysqli_connect_error());
+				   }
+				   
+				   $query = "SELECT * FROM fields";
+				   $result = mysqli_query($link,$query);
+				   $teren=array();
+				   
+				   while($rez=mysqli_fetch_array($result))
+				   {
+					   
+					   array_push($teren,$rez);
+		
+					}
+				 
+				  			  
+				
+				 ?>
 <div class="screen">
   <nav id="icons" class="icons-container" onmouseover="">
     <ul class="icons-list">
@@ -209,21 +259,31 @@
 			
 			<!-- ADDING NEW ACTIVITY -->
 			<div id="new-activity" class="new-activity">
-				<form class="new-activity-form" action="/index.php" method="post">
+				<form class="new-activity-form" action="activit.php" method="POST">
 				  <p style="color:var(--text-primary); font-size: 25px;">Please select a job type:</p>
-				  <input type="radio" id="plowing" name="plowing" value="plowing">
-				  <label style="color:var(--text-primary);" for="plowing">PLOWING</label><br>
-				  <input type="radio" id="seeding" name="seeding" value="seeding">
-				  <label style="color:var(--text-primary);" for="seeding">SEEDING</label><br>
-				  <input type="radio" id="cultivating" name="cultivating" value="cultivating">
-				  <label style="color:var(--text-primary);" for="cultivating">CULTIVATING</label><br>
-				  <input type="radio" id="harvesting" name="harvesting" value="harvesting">
-				  <label style="color:var(--text-primary);" for="harvesting">HARVESTING</label><br>
+				  <input type="radio" name="type" value="plowing">
+				  <label style="color:var(--text-primary);"for="">PLOWING</label><br>
+				  <input type="radio" name="type" value="seeding">
+				  <label style="color:var(--text-primary);"for="" >SEEDING</label><br>
+				  <input type="radio" name="type" value="cultivating">
+				  <label style="color:var(--text-primary);"for="">CULTIVATING</label><br>
+				  <input type="radio" name="type" value="harvesting">
+				  <label style="color:var(--text-primary);"for="">HARVESTING</label><br>
 					
 				  <p style="color:var(--text-primary); font-size: 25px;">Please select fields:</p>
+					<?php
+					for ($i = 0 ; $i < count($teren) ; $i++)
+					{
+					?>
+					<input type="radio"  name="fiel" value="<?php  echo $teren[$i][0];?>">
+					<label style="color:var(--text-primary);" for="teren"><?php  echo $teren[$i][1];?></p></label><br>
+					<?php
+					
+					}
+					?>
+					
 				  <!-- for all fields show as radio -->
-				
-				  <input type="submit" value="Submit">
+				  <button type="submit" name="save_radio" >Submit</button>
 				</form>
 			</div>
 
@@ -257,7 +317,25 @@
 				  <input name="plm" id="plm" type="text" value="y"><br>
 				  <input type="submit" value="Add field" name="field" id="field">
 				</form>
+				
 			</div>
+			<hr>
+			
+			
+				 <div id="new-activity"  class="flex-container">
+				<?php
+				for ($i = 0 ; $i < count($teren) ; $i++)
+				{
+					?><div class="top-menu" style=" background-color:#23232e;">
+					<div class="top-menu-left"><p><?php  echo $teren[$i][1];?></p></div>
+					<div class="top-menu-right"><p style="margin-right:50px;" ><?php  echo $teren[$i][2];?></p></div></div>
+					<?php
+					
+				}
+				?>
+				</div>
+				
+			
 			<script src="JS/field.js"></script>
 		</div>
 		<!-- NUSH -->
