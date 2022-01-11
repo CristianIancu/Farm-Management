@@ -24,7 +24,6 @@ if(isset($_POST['submit']))
 	}
 }
  ?>
-
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<script defer src="theme.js"></script>
@@ -109,52 +108,76 @@ if(isset($_POST['submit']))
 }
 
 ?>
-
+<?php
+					$link = mysqli_connect("localhost", "root", "", "farmmanagement");
+				   if($link === false){
+					  die("ERROR: Could not connect. " . mysqli_connect_error());
+				   }
+				   
+				   $query = "SELECT * FROM fields";
+				   $result = mysqli_query($link,$query);
+				   $teren=array();
+				   
+				   while($rez=mysqli_fetch_array($result))
+				   {
+					   
+					   array_push($teren,$rez);
+					   
+					   
+					   
+					   
+					   
+					}
+				 
+				  			  
+				
+			 ?>
 	<style>
-input, select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-input[type=submit] {
-  width: 100%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-input[type=submit]:hover {
-  background-color
-.flex-container {
-  display: flex;
-  height:500px;
-  color:white;
-  flex-direction: column;
-  background-color:#23232e;
-  overflow-x: hidden;
-        overflow-y: auto;
 	
-  
-}
+	.iasmi, select {
+	  width: 100%;
+	  padding: 12px 20px;
+	  margin: 8px 0;
+	  display: inline-block;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  box-sizing: border-box;
+	}
 
-.flex-container > div {
-  background-color: #f1f1f1;
-  width: 100%;
-  margin: 10px;
-  
-  line-height: 75px;
-  font-size: 30px;
-}
-.div.scroll {
+	.iasmi[type=submit] {
+	  width: 100%;
+	  background-color: #4CAF50;
+	  color: white;
+	  padding: 14px 20px;
+	  margin: 8px 0;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	}
+
+	.iasmi[type=submit]:hover {
+	  background-color
+	}
+	
+	.flex-container {
+	  display: flex;
+	  height:500px;
+	  color:white;
+	  flex-direction: column;
+	  background-color:#23232e;
+	  overflow-x: hidden;
+	  overflow-y: auto;
+	}
+
+	.flex-container > div {
+	  background-color: #f1f1f1;
+	  width: 100%;
+	  margin: 10px;
+	  
+	  line-height: 75px;
+	  font-size: 30px;
+	}
+	.div.scroll {
         background-color: #fed9ff;
         width: 600px;
         height: 150px;
@@ -164,7 +187,7 @@ input[type=submit]:hover {
         padding: 20px;
       }
 </style>
-<body>
+<body style="overflow: hidden;">
 <div class="screen">
   <nav id="icons" class="icons-container" onmouseover="">
     <ul class="icons-list">
@@ -294,21 +317,31 @@ input[type=submit]:hover {
 			
 			<!-- ADDING NEW ACTIVITY -->
 			<div style="display:none;" id="new-activity" class="new-activity">
-				<form class="new-activity-form" action="/index.php" method="post">
+				<form class="new-activity-form" action="activit.php" method="POST">
 				  <p style="color:var(--text-primary); font-size: 25px;">Please select a job type:</p>
-				  <input type="radio" id="plowing" name="plowing" value="plowing">
-				  <label style="color:var(--text-primary);" for="plowing">PLOWING</label><br>
-				  <input type="radio" id="seeding" name="seeding" value="seeding">
-				  <label style="color:var(--text-primary);" for="seeding">SEEDING</label><br>
-				  <input type="radio" id="cultivating" name="cultivating" value="cultivating">
-				  <label style="color:var(--text-primary);" for="cultivating">CULTIVATING</label><br>
-				  <input type="radio" id="harvesting" name="harvesting" value="harvesting">
-				  <label style="color:var(--text-primary);" for="harvesting">HARVESTING</label><br>
+				  <input type="radio" name="type" value="plowing">
+				  <label style="color:var(--text-primary);"for="">PLOWING</label><br>
+				  <input type="radio" name="type" value="seeding">
+				  <label style="color:var(--text-primary);"for="" >SEEDING</label><br>
+				  <input type="radio" name="type" value="cultivating">
+				  <label style="color:var(--text-primary);"for="">CULTIVATING</label><br>
+				  <input type="radio" name="type" value="harvesting">
+				  <label style="color:var(--text-primary);"for="">HARVESTING</label><br>
 					
 				  <p style="color:var(--text-primary); font-size: 25px;">Please select fields:</p>
+					<?php
+					for ($i = 0 ; $i < count($teren) ; $i++)
+					{
+					?>
+					<input type="radio"  name="fiel" value="<?php  echo $teren[$i][0];?>">
+					<label style="color:var(--text-primary);" for="teren"><?php  echo $teren[$i][1];?></p></label><br>
+					<?php
+					
+					}
+					?>
+					
 				  <!-- for all fields show as radio -->
-				
-				  <input type="submit" value="Submit">
+				  <button type="submit" name="save_radio" >Submit</button>
 				</form>
 			</div>
 
@@ -347,30 +380,7 @@ input[type=submit]:hover {
 			
 			<script src="JS/field.js"></script>
 			<hr>
-			<?php
-					$link = mysqli_connect("localhost", "root", "", "farmmanagement");
-				   if($link === false){
-					  die("ERROR: Could not connect. " . mysqli_connect_error());
-				   }
-				   
-				   $query = "SELECT * FROM fields";
-				   $result = mysqli_query($link,$query);
-				   $teren=array();
-				   
-				   while($rez=mysqli_fetch_array($result))
-				   {
-					   
-					   array_push($teren,$rez);
-					   
-					   
-					   
-					   
-					   
-					}
-				 
-				  			  
-				
-			 ?>
+			
 				 <div id="new-activity"  class="flex-container">
 				<?php
 				for ($i = 0 ; $i < count($teren) ; $i++)
@@ -393,34 +403,31 @@ input[type=submit]:hover {
 		<div id="menu4">
 			<div class="top-menu">
 				<div class="top-menu-left">
-					<h1 class="top-menu-h1">Workers</h1>
+					<h1 class="top-menu-h1">WORKERS</h1>
 				</div>
 				<div class="top-menu-right">
-					<input class="add-activity" type="submit" name="submit" value="ADD NEW" />
-</div>
-
-
-
-				
-				
+					<button id="button" class="add-activity" onmousedown="addWorkerForm();">ADD NEW</button>
+				</div>
 			</div>
-			<div id="new-activity" class="new-activity">
+			<hr>
+			<div style="display:none;" id="new-worker" class="new-activity">
 				<form action="" method="post"  >
 				  <p style="color:var(--text-primary); font-size: 25px;">Creare cont angajati</p>
-        <input name="username" type="text"  name="username" autocomplete="false" placeholder="Name">
+        <input class="iasmi" name="username" type="text"  name="username" autocomplete="false" placeholder="Name">
       	  <p class='field'>
-        <input name="email" type="text"  name="email" autocomplete="false" placeholder="E-mail">
+        <input class="iasmi" name="email" type="text"  name="email" autocomplete="false" placeholder="E-mail">
       </p>
       <p class='field'>
-        <input name="password" type="password" name="password" autocomplete="false" placeholder="Password">
+        <input class="iasmi" name="password" type="password" name="password" autocomplete="false" placeholder="Password">
       </p>
 					
 				<div class="wrap">
-        <input class='button' type="submit" align="center" name="submit" value ="Add" />
+        <input class="iasmi" class='button' type="submit" align="center" name="submit" value ="Add" />
       </div>  
 				
 			
 				</form>
+				</div>
 				<hr>
 				<?php
 					$link = mysqli_connect("localhost", "root", "", "farmmanagement");
@@ -455,12 +462,14 @@ input[type=submit]:hover {
 				?>
 				</div>
 				
-			</div>
+			
 			
 			
 		
 
 		</div>
+		
+		
 	</nav>
 	
 	<button id="button-icon" class="button-icon" onmousedown="small();"><</button>

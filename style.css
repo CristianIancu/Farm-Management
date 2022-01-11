@@ -13,7 +13,6 @@ body {
   background-color: white;
   margin: 0;
   padding: 0;
-  
 }
 
 body::-webkit-scrollbar {
@@ -72,7 +71,6 @@ body::-webkit-scrollbar-thumb {
 }
 .top-menu {
 	display: flex;
-	
 	justify-content: space-between;
 }
 .top-menu-left{
@@ -81,7 +79,6 @@ body::-webkit-scrollbar-thumb {
 }
 .top-menu-right{
 	display: flex;
-	
 	justify-content: flex-end;
 }
 .add-activity
