@@ -6,6 +6,24 @@
 
 
 ?>
+<?php
+include_once("PHP/config.php");
+if(isset($_POST['submit']))
+{
+	$username=$_POST['username'];
+	$email=$_POST['email'];
+	$password=$_POST['password'];
+	$query=mysqli_query($con,"insert into users (username,email,password) values('$username','$email','$password')");
+	if($query)
+	{
+	echo "<script>alert('Data inserted successfully');</script>";
+	}
+	else
+	{
+		echo "<script>alert('Data not inserted');</script>";
+	}
+}
+ ?>
 
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -93,6 +111,29 @@
 ?>
 
 	<style>
+input, select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color
 .flex-container {
   display: flex;
   height:500px;
@@ -350,10 +391,76 @@
 		</div>
 		<!-- WORKERS -->
 		<div id="menu4">
+			<div class="top-menu">
+				<div class="top-menu-left">
+					<h1 class="top-menu-h1">Workers</h1>
+				</div>
+				<div class="top-menu-right">
+					<input class="add-activity" type="submit" name="submit" value="ADD NEW" />
+</div>
+
+
+
+				
+				
+			</div>
+			<div id="new-activity" class="new-activity">
+				<form action="" method="post"  >
+				  <p style="color:var(--text-primary); font-size: 25px;">Creare cont angajati</p>
+        <input name="username" type="text"  name="username" autocomplete="false" placeholder="Name">
+      	  <p class='field'>
+        <input name="email" type="text"  name="email" autocomplete="false" placeholder="E-mail">
+      </p>
+      <p class='field'>
+        <input name="password" type="password" name="password" autocomplete="false" placeholder="Password">
+      </p>
+					
+				<div class="wrap">
+        <input class='button' type="submit" align="center" name="submit" value ="Add" />
+      </div>  
+				
+			
+				</form>
+				<hr>
+				<?php
+					$link = mysqli_connect("localhost", "root", "", "farmmanagement");
+				   if($link === false){
+					  die("ERROR: Could not connect. " . mysqli_connect_error());
+				   }
+				   
+				   $query = "SELECT * FROM users";
+				   $result = mysqli_query($link,$query);
+				   $username=array();
+				   
+				   while($rez=mysqli_fetch_array($result))
+				   {
+					   
+					   array_push($username,$rez);
+		
+					}
+				 
+				  			  
+				
+				 ?>
+				 <div id="new-activity"  class="flex-container">
+				<?php
+				for ($i = 0 ; $i < count($username) ; $i++)
+				{
+					?><div class="top-menu" style=" background-color:#23232e; color: white">
+					<div class="top-menu-left"><p><?php  echo $username[$i][1];?></p></div>
+					<div class="top-menu-right"><p style="margin-right:50px;" ></p></div></div>
+					<?php
+					
+				}
+				?>
+				</div>
+				
+			</div>
+			
+			
+		
 
 		</div>
-		
-		
 	</nav>
 	
 	<button id="button-icon" class="button-icon" onmousedown="small();"><</button>
