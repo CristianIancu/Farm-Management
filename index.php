@@ -6,24 +6,6 @@
 
 
 ?>
-<?php
-include_once("php/config.php");
-if(isset($_POST['submit']))
-{
-	$username=$_POST['username'];
-	$email=$_POST['email'];
-	$password=$_POST['password'];
-	$query=mysqli_query($con,"insert into users (username,email,password) values('$username','$email','$password')");
-	if($query)
-	{
-	echo "<script>alert('Data inserted successfully');</script>";
-	}
-	else
-	{
-		echo "<script>alert('Data not inserted');</script>";
-	}
-}
- ?>
 
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -61,29 +43,6 @@ if(isset($_POST['submit']))
 	css" />
 	<script src="https://unpkg.com/leaflet-draw@1.0.2/dist/leaflet.draw-src.js"></script>
 	<style>
-input, select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-input[type=submit] {
-  width: 100%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-input[type=submit]:hover {
-  background-color
 .flex-container {
   display: flex;
   height:500px;
@@ -386,72 +345,37 @@ input[type=submit]:hover {
 		<div id="menu4">
 			<div class="top-menu">
 				<div class="top-menu-left">
-					<h1 class="top-menu-h1">Workers</h1>
+					<h1 class="top-menu-h1">Activity</h1>
 				</div>
 				<div class="top-menu-right">
-					<input class="add-activity" type="submit" name="submit" value="ADD NEW" />
-</div>
-
-
-
-				
-				
-			</div>
-			<div id="new-activity" class="new-activity">
-				<form action="" method="post"  >
-				  <p style="color:var(--text-primary); font-size: 25px;">Creare cont angajati</p>
-        <input name="username" type="text"  name="username" autocomplete="false" placeholder="Name">
-      	  <p class='field'>
-        <input name="email" type="text"  name="email" autocomplete="false" placeholder="E-mail">
-      </p>
-      <p class='field'>
-        <input name="password" type="password" name="password" autocomplete="false" placeholder="Password">
-      </p>
-					
-				<div class="wrap">
-        <input class='button' type="submit" align="center" name="submit" value ="Add" />
-      </div>  
-				
-			
-				</form>
-				<hr>
-				<?php
-					$link = mysqli_connect("localhost", "root", "", "farmmanagement");
-				   if($link === false){
-					  die("ERROR: Could not connect. " . mysqli_connect_error());
-				   }
-				   
-				   $query = "SELECT * FROM users";
-				   $result = mysqli_query($link,$query);
-				   $username=array();
-				   
-				   while($rez=mysqli_fetch_array($result))
-				   {
-					   
-					   array_push($username,$rez);
-		
-					}
-				 
-				  			  
-				
-				 ?>
-				 <div id="new-activity"  class="flex-container">
-				<?php
-				for ($i = 0 ; $i < count($username) ; $i++)
-				{
-					?><div class="top-menu" style=" background-color:#23232e; color: white">
-					<div class="top-menu-left"><p><?php  echo $username[$i][1];?></p></div>
-					<div class="top-menu-right"><p style="margin-right:50px;" ></p></div></div>
-					<?php
-					
-				}
-				?>
+					<button id="add-activity" class="add-activity" onmousedown="">ADD NEW</button>
 				</div>
-				
 			</div>
+			<hr>
+			<div class="search">
+			  <input type="text" placeholder="  Search..">
+			</div>
+			<hr>
 			
-			
-		
+			<!-- ADDING NEW ACTIVITY -->
+			<div id="new-activity" class="new-activity">
+				<form class="new-activity-form" action="/index.php" method="post">
+				  <p style="color:var(--text-primary); font-size: 25px;">Please select a job type:</p>
+				  <input type="radio" id="plowing" name="plowing" value="plowing">
+				  <label style="color:var(--text-primary);" for="plowing">PLOWING</label><br>
+				  <input type="radio" id="seeding" name="seeding" value="seeding">
+				  <label style="color:var(--text-primary);" for="seeding">SEEDING</label><br>
+				  <input type="radio" id="cultivating" name="cultivating" value="cultivating">
+				  <label style="color:var(--text-primary);" for="cultivating">CULTIVATING</label><br>
+				  <input type="radio" id="harvesting" name="harvesting" value="harvesting">
+				  <label style="color:var(--text-primary);" for="harvesting">HARVESTING</label><br>
+					
+				  <p style="color:var(--text-primary); font-size: 25px;">Please select fields:</p>
+				  <!-- for all fields show as radio -->
+				
+				  <input type="submit" value="Submit">
+				</form>
+			</div>
 
 		</div>
 		
